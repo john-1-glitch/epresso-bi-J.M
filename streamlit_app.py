@@ -9,7 +9,7 @@ MAX_QUESTIONS = 15  # per-session limit for the assistant
 
 st.set_page_config(page_title='E-Presso BI Analyst', layout='wide')
 st.title('E-Presso BI Analyst')
-st.caption('Starter app. Replace this line with a description of your own application.')
+st.caption('Interactive Business Intelligence dashboard for E-Presso retail sales, stores, products, and customer satisfaction.')
 
 
 @st.cache_data(show_spinner=False)
@@ -52,6 +52,20 @@ with tab_data:
     right.subheader('Data types')
     right.dataframe(profile['dtypes'])
 
+    # --- STAGE 1: Relational & Schema Inspector ---
+    st.divider()
+    st.subheader('Stage 1: Relational & Schema Inspector')
+    if uploaded.name.lower().endswith(analytics.EXCEL_EXT):
+        all_sheets = analytics.excel_sheet_names(uploaded.getvalue())
+        st.write('**Excel Sheets found in workbook:**', all_sheets)
+    
+    num_cols = df.select_dtypes(include='number').columns.tolist()
+    cat_cols = df.select_dtypes(exclude='number').columns.tolist()
+    
+    col_a, col_b = st.columns(2)
+    col_a.write('**Numeric Columns:**', num_cols)
+    col_b.write('**Non-Numeric / Key / Date Columns:**', cat_cols)
+
 with tab_dash:
     st.info('TODO: KPIs, filters, and at least three charts go here. '
             'Calculate everything from the loaded data. Never hardcode results.')
@@ -79,3 +93,4 @@ with tab_assistant:
             answer = agent.answer_question(question, df, mode='rules')
             st.session_state['history'].append({'question': question, 'answer': answer})
             st.rerun()
+
