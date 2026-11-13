@@ -12,7 +12,7 @@
 ## Milestone Status
 - [x] **Repo & GitHub Setup:** Initialized local repo, merged starter template history from `origin/main`, Keychain auth working.
 - [x] **Stage A — Core Analytics & Validation (`508d3fa`):** Copied `analytics.py`, `scripts/export_access.py`, `scripts/independent_check.py`, `tests/test_epresso.py`. Verified **24/24 tests passing** (`test_epresso.py` + `test_analytics.py`) and pushed to `origin/main`.
-- [ ] **Stage B — AI Agent & Guardrails:** Copy `agent.py`, `tests/test_tools.py`, `tests/test_llm.py`, run full test suite, commit & push.
+- [x] **Stage B — AI Agent & Guardrails:** Copied `agent.py`, `tests/test_tools.py`, `tests/test_llm.py`. Verified **91/91 tests passing** across the full suite and pushed to `origin/main`.
 - [ ] **Stage C — Streamlit UI & Cloud Deployment:** Copy `streamlit_app.py`, test locally, deploy on `share.streamlit.io` with `GEMINI_API_KEY` in Secrets, run `$1,000` modified-data test.
 - [ ] **Stage D — Documentation & Submission:** Finalize `README.md` and `docs/` (`data_profile.md`, `powerbi_reconciliation.md`, `validation.md`, `agent_tests.md`, rewrite `reflection_draft.md` in own words, complete `team_contribution.md`).
 
