@@ -1,0 +1,21 @@
+# Python / Virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+
+# Streamlit secrets (NEVER commit API keys)
+.streamlit/secrets.toml
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
