@@ -26,90 +26,214 @@ st.set_page_config(page_title='E-Presso BI Analyst', layout='wide')
 
 st.markdown("""
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
+
+  @keyframes andurilReveal {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.92); }
+  }
+
   html, body, [class*="css"] {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
   .stApp {
-    background: #FFFFFF;
+    background-color: #FFFFFF;
+    background-image:
+      linear-gradient(to right, rgba(20, 83, 45, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 83, 45, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
   [data-testid="stSidebar"] {
-    background: rgba(244, 247, 245, 0.85);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border-right: 1px solid rgba(20, 83, 45, 0.10);
+    background: rgba(244, 247, 245, 0.94);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(20, 83, 45, 0.18);
   }
-  /* Liquid glass KPI cards */
-  [data-testid="stMetric"] {
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(18px) saturate(180%);
-    -webkit-backdrop-filter: blur(18px) saturate(180%);
-    border: 1px solid rgba(20, 83, 45, 0.14);
-    border-radius: 16px;
-    padding: 16px 20px;
-    box-shadow: 0 8px 24px rgba(20, 83, 45, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  /* Anduril Tactical Hero Banner */
+  .anduril-hero {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(240,253,244,0.88) 100%);
+    border: 1px solid rgba(20, 83, 45, 0.28);
+    border-left: 4px solid #14532D;
+    padding: 22px 28px;
+    margin-bottom: 20px;
+    animation: andurilReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px rgba(20, 83, 45, 0.05);
   }
-  [data-testid="stMetricLabel"] {
-    color: #4B5563;
-    font-weight: 500;
-  }
-  [data-testid="stMetricValue"] {
+  .anduril-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.73rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: #14532D;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
   }
-  /* Glass tabs */
+  .anduril-dot {
+    width: 8px;
+    height: 8px;
+    background: #16A34A;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px #16A34A;
+    animation: pulseDot 2.2s infinite ease-in-out;
+  }
+  .anduril-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.0rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0B130E;
+    margin: 0 0 4px 0;
+    line-height: 1.15;
+  }
+  .anduril-sub {
+    font-size: 0.92rem;
+    color: #4B5563;
+    margin: 0;
+  }
+
+  /* Anduril Full-Width Architectural Top Navigation Bar */
   .stTabs [data-baseweb="tab-list"] {
-    gap: 10px;
-    background: rgba(244, 247, 245, 0.85);
-    backdrop-filter: blur(14px);
-    padding: 8px;
-    border-radius: 16px;
-    border: 1px solid rgba(20, 83, 45, 0.12);
-    flex-wrap: wrap;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(180px, 1fr)) !important;
+    width: 100% !important;
+    gap: 0px !important;
+    background: #FFFFFF !important;
+    padding: 0 !important;
+    border: 1px solid rgba(20, 83, 45, 0.28) !important;
+    border-radius: 4px !important;
+    overflow: hidden;
+    margin-bottom: 18px;
   }
   .stTabs [data-baseweb="tab"] {
-    border-radius: 12px;
-    padding: 10px 24px !important;
-    min-width: 150px;
-    justify-content: center;
-    color: #1F2937;
-    font-weight: 500;
-    white-space: nowrap;
+    width: 100% !important;
+    height: 52px !important;
+    margin: 0 !important;
+    padding: 0 18px !important;
+    border-radius: 0 !important;
+    border-right: 1px solid rgba(20, 83, 45, 0.16) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    justify-content: center !important;
+    transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .stTabs [data-baseweb="tab"]:last-child {
+    border-right: none !important;
+  }
+  .stTabs [data-baseweb="tab"] p {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: #1F2937 !important;
+    white-space: nowrap !important;
+    transition: color 0.25s ease !important;
+  }
+  .stTabs [data-baseweb="tab"]:hover {
+    background: rgba(220, 252, 231, 0.45) !important;
   }
   .stTabs [aria-selected="true"] {
     background: #14532D !important;
-    color: #FFFFFF !important;
-    box-shadow: 0 4px 12px rgba(20, 83, 45, 0.22);
+    box-shadow: inset 0 -3px 0 #22C55E !important;
   }
   .stTabs [aria-selected="true"] p {
     color: #FFFFFF !important;
-    font-weight: 600 !important;
   }
-  .stTabs [data-baseweb="tab-highlight"] {
-    display: none;
+  .stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] {
+    display: none !important;
   }
-  /* Light green liquid-glass tables */
+
+  /* Tactical KPI Telemetry Cards with Smooth Hover Transition */
+  [data-testid="stMetric"] {
+    position: relative;
+    background: rgba(255, 255, 255, 0.90);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(20, 83, 45, 0.22);
+    border-top: 3px solid #14532D;
+    border-radius: 4px;
+    padding: 16px 20px;
+    box-shadow: 0 6px 20px rgba(20, 83, 45, 0.05);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.28s ease;
+    animation: andurilReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-testid="stMetric"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(20, 83, 45, 0.12);
+    border-color: #14532D;
+  }
+  [data-testid="stMetricLabel"] {
+    font-family: 'JetBrains Mono', monospace !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem !important;
+    color: #4B5563;
+  }
+  [data-testid="stMetricValue"] {
+    font-family: 'Space Grotesk', sans-serif !important;
+    color: #14532D;
+    font-weight: 700;
+  }
+
+  /* Light-green tactical tables */
   [data-testid="stDataFrame"], [data-testid="stTable"] {
-    background: rgba(220, 252, 231, 0.42);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid rgba(20, 83, 45, 0.18);
-    border-radius: 16px;
+    background: rgba(220, 252, 231, 0.45);
+    border: 1px solid rgba(20, 83, 45, 0.24);
+    border-left: 3px solid #14532D;
+    border-radius: 6px;
     padding: 10px;
+    animation: andurilReveal 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  /* Glass expanders & chat cards */
+
+  /* Expanders, Alerts & Chat Containers */
   [data-testid="stExpander"], [data-testid="stChatMessage"] {
-    background: rgba(255, 255, 255, 0.78);
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    border: 1px solid rgba(20, 83, 45, 0.12);
-    border-radius: 16px;
-    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(20, 83, 45, 0.18);
+    border-radius: 6px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    animation: andurilReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-testid="stExpander"]:hover {
+    border-color: rgba(20, 83, 45, 0.45);
+  }
+  [data-testid="stPlotlyChart"] {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(20, 83, 45, 0.16);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    transition: border-color 0.28s ease, box-shadow 0.28s ease;
+    animation: andurilReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-testid="stPlotlyChart"]:hover {
+    border-color: rgba(20, 83, 45, 0.42);
+    box-shadow: 0 8px 24px rgba(20, 83, 45, 0.07);
   }
 </style>
 """, unsafe_allow_html=True)
 
-st.title('E-Presso BI Analyst')
-st.caption('Revenue analysis for E-Presso stores and the website. Preloaded with default data—any file you upload takes priority.')
+st.markdown("""
+<div class="anduril-hero">
+  <div class="anduril-meta">
+    <span class="anduril-dot"></span>
+    <span>SYS // E-PRESSO RETAIL INTELLIGENCE</span>
+    <span>·</span>
+    <span>STATUS: ACTIVE TELEMETRY</span>
+    <span>·</span>
+    <span>DYNAMIC UPLOAD PRIORITY</span>
+  </div>
+  <h1 class="anduril-title">E-PRESSO // BI COMMAND &amp; ANALYTICAL AGENT</h1>
+  <p class="anduril-sub">Real-time multi-channel revenue telemetry, verified schema joins, and constrained function-calling AI analysis.</p>
+</div>
+""", unsafe_allow_html=True)
 
 
 @st.cache_data(show_spinner=False)
@@ -267,56 +391,121 @@ def render_dashboard():
 
     all_revenue = float(model['Revenue'].sum())
     view_revenue = float(view['Revenue'].sum())
-    k1, k2, k3 = st.columns(3)
-    k1.metric('Revenue in selection', money(view_revenue))
-    k2.metric('Share of all revenue', f'{view_revenue / all_revenue:.1%}' if all_revenue else 'n/a')
-    k3.metric('Stores in selection', view['Store ID'].nunique())
-    st.caption('Revenue is not profit: the data has no costs, so margins cannot be shown.')
+    web_rev = float(view.loc[view['StoreType'] == 'Website', 'Revenue'].sum()) if 'StoreType' in view else 0.0
+    web_share = (web_rev / view_revenue) if view_revenue else 0.0
+    yr_totals = view.groupby('Year')['Revenue'].sum().sort_index()
+    if len(yr_totals) >= 2 and yr_totals.iloc[0]:
+        yoy_span = (yr_totals.iloc[-1] - yr_totals.iloc[0]) / yr_totals.iloc[0]
+        span_label = f"{int(yr_totals.index[0])}→{int(yr_totals.index[-1])}: {yoy_span:+.1%}"
+    else:
+        span_label = 'Single period'
 
-    # Chart 1: is revenue growing, and in which channel?
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric('01 // Revenue in Selection', money(view_revenue),
+              delta=f'{view_revenue / all_revenue:.1%} of dataset' if all_revenue else 'n/a', delta_color='off')
+    k2.metric('02 // Website Channel', money(web_rev),
+              delta=f'{web_share:.1%} of selection', delta_color='off')
+    k3.metric('03 // Period Trajectory', money(float(yr_totals.iloc[-1])) if len(yr_totals) else '$0.00',
+              delta=span_label, delta_color='off')
+    k4.metric('04 // Active Stores', f"{view['Store ID'].nunique()} / {model['Store ID'].nunique()}",
+              delta=f"{len(view):,} records in scope", delta_color='off')
+    st.caption('TELEMETRY NOTE // Revenue is gross top-line sales (not profit): cost and margin data are not present.')
+
+    # Chart 1: Multi-Layer Spline Area Trajectory (Revenue by Year & Channel)
     by_year = analytics.revenue_by_year_channel(view)
     fig = go.Figure()
+    fill_map = {'Website': 'rgba(20, 83, 45, 0.16)', 'Brick & Mortar': 'rgba(100, 116, 139, 0.12)'}
     for channel, part in by_year.groupby('StoreType'):
+        c_hex = channel_color.get(channel, BAR_COLOR)
         fig.add_trace(go.Scatter(
-            x=part['Year'], y=part['Revenue'], name=channel, mode='lines+markers',
-            line=dict(width=2, color=channel_color[channel]), marker=dict(size=8),
+            x=part['Year'], y=part['Revenue'], name=channel, mode='lines+markers+text',
+            line=dict(width=3, color=c_hex, shape='spline'),
+            marker=dict(size=9, color='#FFFFFF', line=dict(width=2.5, color=c_hex)),
+            fill='tozeroy', fillcolor=fill_map.get(channel, 'rgba(20, 83, 45, 0.10)'),
+            text=[f'${v / 1e6:.2f}M' for v in part['Revenue']],
+            textposition='top center', textfont=dict(size=11, color=c_hex),
             hovertemplate=f'<b>{channel}</b><br>%{{x}}: $%{{y:,.0f}}<extra></extra>'))
     fig.update_xaxes(dtick=1)
     fig.update_yaxes(tickprefix='$', tickformat='~s', rangemode='tozero')
-    st.plotly_chart(style_chart(fig, 'Revenue by year and channel'), use_container_width=True)
+    fig = style_chart(fig, '01 // CHANNEL TRAJECTORY — ANNUAL REVENUE BY CHANNEL', height=390)
+    fig.update_layout(hovermode='x unified')
+    st.plotly_chart(fig, use_container_width=True)
     table_view(by_year.rename(columns={'StoreType': 'Channel'}))
 
     left, right = st.columns(2)
 
-    # Chart 2: which product categories bring in the money?
+    # Chart 2: Category Precision Telemetry Bar
     with left:
         by_cat = analytics.category_breakdown(view).iloc[::-1]  # largest at the top
+        palette = ['#86EFAC', '#4ADE80', '#22C55E', '#16A34A', '#14532D']
+        cat_colors = (palette * 3)[:len(by_cat)]
         fig = go.Figure(go.Bar(
             x=by_cat['Revenue'], y=by_cat['Category'], orientation='h',
-            marker_color=BAR_COLOR, customdata=by_cat['Share'],
-            text=[f'${v / 1e6:,.1f}M · {s:.0%}' for v, s in zip(by_cat['Revenue'], by_cat['Share'])],
+            marker=dict(color=cat_colors, line=dict(color='#14532D', width=1)),
+            customdata=by_cat['Share'],
+            text=[f'${v / 1e6:,.2f}M  ({s:.1%})' for v, s in zip(by_cat['Revenue'], by_cat['Share'])],
             textposition='outside', cliponaxis=False,
             hovertemplate='<b>%{y}</b><br>$%{x:,.0f} (%{customdata:.1%} of selection)<extra></extra>'))
         fig.update_xaxes(tickprefix='$', tickformat='~s', showgrid=True,
-                         gridcolor='rgba(128,128,128,0.2)')
-        st.plotly_chart(style_chart(fig, 'Revenue by category'), use_container_width=True)
+                         gridcolor='rgba(20, 83, 45, 0.08)')
+        st.plotly_chart(style_chart(fig, '02 // PRODUCT CATEGORY TELEMETRY', height=380),
+                        use_container_width=True)
         table_view(by_cat.iloc[::-1])
 
-    # Chart 3: when in the year does revenue come in?
+    # Chart 3: Dual-Axis Monthly Seasonality & Cumulative Share Curve
     with right:
-        by_month = analytics.revenue_by_month(view)
-        fig = go.Figure(go.Bar(
-            x=by_month['Month'], y=by_month['Revenue'], marker_color=BAR_COLOR,
+        by_month = analytics.revenue_by_month(view).copy()
+        by_month['Cumulative Share'] = by_month['Share'].cumsum()
+        month_colors = ['#14532D' if s == by_month['Share'].max() else '#2E7D5B'
+                        for s in by_month['Share']]
+        fig = go.Figure()
+        fig.add_trace(go.Bar(
+            x=by_month['Month'], y=by_month['Revenue'], name='Monthly Revenue',
+            marker=dict(color=month_colors),
             customdata=by_month['Share'],
             hovertemplate='<b>%{x}</b><br>$%{y:,.0f} (%{customdata:.1%} of selection)<extra></extra>'))
+        fig.add_trace(go.Scatter(
+            x=by_month['Month'], y=by_month['Cumulative Share'], name='Cumulative Share',
+            yaxis='y2', mode='lines+markers',
+            line=dict(color='#0F172A', width=2.5, dash='dot'),
+            marker=dict(size=6, color='#16A34A'),
+            hovertemplate='<b>%{x}</b> Cumulative: %{y:.1%}<extra></extra>'))
+        fig = style_chart(fig, '03 // MONTHLY SEASONALITY & CUMULATIVE CURVE', height=380)
         fig.update_yaxes(tickprefix='$', tickformat='~s')
-        st.plotly_chart(style_chart(fig, 'Revenue by month (selected years combined)'),
-                        use_container_width=True)
-        table_view(by_month)
+        fig.update_layout(yaxis2=dict(
+            overlaying='y', side='right', range=[0, 1.08], tickformat='.0%',
+            showgrid=False, title=dict(text='Cumulative %', font=dict(size=11, color='#4B5563'))))
+        st.plotly_chart(fig, use_container_width=True)
+        table_view(by_month, pct_cols=('Share', 'Cumulative Share'))
+
+    # Chart 4: Store Performance Telemetry Ranking
+    store_grp = (view.groupby(['Store ID', 'City', 'Location', 'StoreType'], dropna=False)['Revenue']
+                 .sum().reset_index().sort_values('Revenue', ascending=False).head(12))
+    if not store_grp.empty:
+        store_grp['Label'] = [analytics.store_label(r['Store ID'], r['City'], r['Location'])
+                              for _, r in store_grp.iterrows()]
+        store_grp['Share'] = store_grp['Revenue'] / view_revenue if view_revenue else 0.0
+        rev_ord = store_grp.iloc[::-1]
+        bar_cols = [channel_color.get(ch, BAR_COLOR) for ch in rev_ord['StoreType']]
+        fig4 = go.Figure(go.Bar(
+            x=rev_ord['Revenue'], y=rev_ord['Label'], orientation='h',
+            marker=dict(color=bar_cols),
+            customdata=list(zip(rev_ord['StoreType'], rev_ord['Share'])),
+            text=[f"${v / 1e6:,.2f}M · {s:.1%}" for v, s in zip(rev_ord['Revenue'], rev_ord['Share'])],
+            textposition='outside', cliponaxis=False,
+            hovertemplate='<b>%{y}</b> (%{customdata[0]})<br>$%{x:,.0f} · %{customdata[1]:.1%}<extra></extra>'))
+        fig4.update_xaxes(tickprefix='$', tickformat='~s', showgrid=True,
+                          gridcolor='rgba(20, 83, 45, 0.08)')
+        st.plotly_chart(style_chart(fig4, '04 // TOP PERFORMING STORES IN SELECTION (COLORED BY CHANNEL)',
+                                    height=400), use_container_width=True)
 
 
-tab_data, tab_revenue, tab_dash, tab_assistant = st.tabs(
-    ['Data and quality', 'Revenue and merge checks', 'Dashboard', 'Assistant'])
+tab_dash, tab_assistant, tab_revenue, tab_data = st.tabs([
+    '01 // COMMAND DASHBOARD',
+    '02 // ANALYTICAL AGENT',
+    '03 // REVENUE & MERGE AUDIT',
+    '04 // DATA & QUALITY',
+])
 
 with tab_data:
     st.subheader('Grain statements')

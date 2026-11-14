@@ -16,7 +16,7 @@
 - [x] **Stage B — AI Agent & Guardrails (`67d1e95`):** Copied `agent.py`, `tests/test_tools.py`, `tests/test_llm.py`. Verified **91/91 tests passing** across the full suite and pushed to `origin/main`.
 - [x] **Stage C — Streamlit UI (`710263e`):** Copied `streamlit_app.py` with short `Answered by: Gemini` / `Answered by: Rules` label. Deployed on `share.streamlit.io` with `GEMINI_API_KEY` in Secrets and verified file upload works.
 - [x] **Stage D — Documentation (`3c8124c`):** Added `README.md` (with live URL) and `docs/`.
-- [x] **UI & Preload Upgrade:** Added Apple-inspired Liquid Glass theme (white `#FFFFFF` background, dark green `#14532D` accent via `.streamlit/config.toml` + CSS) and default data auto-loading from `data/raw/` with uploaded-file priority. Remaining: test `Sales_PLUS_1000_TEST.csv` on the live URL, rewrite `reflection_draft.md` in own words, and fill in `team_contribution.md`.
+- [x] **Anduril-Inspired UI & Command Dashboard Upgrade:** Redesigned `streamlit_app.py` with Anduril tactical-industrial aesthetic (architectural grid background, pulsing live telemetry header, full-width 4-column top nav bar, smooth cubic-bezier entrance/hover transitions), promoted `01 // COMMAND DASHBOARD` to the first start page, and upgraded to 4 telemetry KPIs + 4 interactive charts (Spline Area Trajectory, Gradient Category Telemetry Bar, Dual-Axis Monthly Seasonality + Cumulative Curve, and Top Performing Stores by Channel).
 
 ## Key Decisions
 - **High-level understanding only:** Keep explanations concise and high-level (no line-by-line code defense walkthroughs).
