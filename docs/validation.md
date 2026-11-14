@@ -39,6 +39,14 @@ The predictions below were written down before the modified file was uploaded. T
 | Filter combinations checked (changed / unchanged) | Changed: 2025 + Website went from $3,160,230 to $3,161,230; 2025 + Beans went from $984,990 to $985,990. Unchanged: 2025 + Brick & Mortar stayed $4,021,520; 2026 + Website stayed $4,784,750; store SH01 (all years) stayed $727,080. |
 | Assistant, same question before and after | "What was total revenue in 2025?" answered $7,181,750 before and $7,182,750 after. "How much revenue did the website generate in 2025?" answered $3,160,230 before and $3,161,230 after (Agent Test 5). |
 | Code changes required? | None. The app's cache is keyed on each file's contents, so the new upload was recalculated immediately. |
-| Original data restored? | Yes. Re-uploading the original files brought the total back to $42,174,440.00. The original files were never edited; the change was made in a separate copy. |
+| Original data restored? | Yes. Removing the uploaded override restored the preloaded default files and brought the total back to $42,174,440.00. The original files were never edited; the change was made in a separate copy. |
 
-Before the defense, repeat this once on the hosted app and take screenshots of the Total revenue KPI and the Revenue by year and channel chart before and after.
+### Screenshots: Before vs. After the +$1,000 Modified Upload
+
+**Before upload (Default dataset — Total Revenue `$42,174,440.00`, Website `$27,218,880.00`):**
+
+![Before +$1,000 upload](screenshots/before_plus_1000.png)
+
+**After uploading `Sales_PLUS_1000_TEST.csv` (Modified dataset — Total Revenue `$42,175,440.00`, Website `$27,219,880.00`):**
+
+![After +$1,000 upload](screenshots/after_plus_1000.png)

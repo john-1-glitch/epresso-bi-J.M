@@ -8,11 +8,11 @@ E-Presso BI Analyst lets a manager upload the company's sales, store and survey 
 
 **[epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app](https://epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app/)**
 
-The app may take a moment to wake up if nobody has used it recently. It starts empty: upload the files listed below to begin.
+The app may take a moment to wake up if nobody has used it recently. It opens preloaded with the default E-Presso dataset from `data/raw/`, and any file you upload in the sidebar immediately overrides that table.
 
 ## How to use it
 
-Upload the original course files in the sidebar. The quickest way is three files: the Access database fills Sales, Categories and Products at once.
+By default, the app loads the original course files from `data/raw/` automatically. To test modified or updated data (such as the `+$1,000` test), upload a replacement file into the corresponding sidebar slot—uploaded files always take priority:
 
 | Upload box | File | Notes |
 |---|---|---|
@@ -22,7 +22,7 @@ Upload the original course files in the sidebar. The quickest way is three files
 
 CSV or Excel exports also work, one per table (for example `Sales.csv`, `Categories.csv` and `Products.csv` made with `scripts/export_access.py`). In a workbook or database, the app uses the sheet or table that has the required columns. It names any missing column instead of crashing, and an updated file with added or removed rows, blanks, or new stores, years or categories is recalculated without code changes.
 
-The app has four tabs. **Data and quality** shows the grain of each table, a data quality summary and a profile of any table. **Revenue and merge checks** shows total revenue, revenue by year and the result of every join. **Dashboard** has Year, Channel, Store and Category filters (all built from the loaded data), three KPIs and three charts, each with a table view. **Assistant** answers questions, up to 15 per session.
+The app is organized into four top-level views in a sleek, modern dark-mode layout. **01 // Command Dashboard** is the start page, featuring Year, Channel, Store and Category filters (all built dynamically from the loaded data), four KPIs and four interactive charts (channel trajectory, product categories, monthly seasonality with a cumulative curve, and top stores), each with a table view. **02 // Analytical Agent** answers plain-English business questions (up to 15 per session) and displays a clear badge showing whether Gemini or the rules engine answered. **03 // Revenue & Merge Audit** shows total revenue, revenue by year cards, and the `check_merge()` verification table for every join. **04 // Data & Quality** shows the grain of each table, a data quality summary and a profile of any table.
 
 ## Data model
 

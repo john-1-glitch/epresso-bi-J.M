@@ -28,7 +28,7 @@ st.markdown("""
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
 
-  @keyframes andurilReveal {
+  @keyframes modernReveal {
     0% { opacity: 0; transform: translateY(10px); }
     100% { opacity: 1; transform: translateY(0); }
   }
@@ -54,18 +54,18 @@ st.markdown("""
     border-right: 1px solid rgba(34, 197, 94, 0.20);
   }
 
-  /* Anduril Tactical Hero Banner */
-  .anduril-hero {
+  /* Modern Hero Banner */
+  .modern-hero {
     position: relative;
     background: linear-gradient(135deg, rgba(17, 23, 19, 0.96) 0%, rgba(20, 48, 32, 0.78) 100%);
     border: 1px solid rgba(34, 197, 94, 0.28);
     border-left: 4px solid #22C55E;
     padding: 22px 28px;
     margin-bottom: 20px;
-    animation: andurilReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: modernReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
   }
-  .anduril-meta {
+  .modern-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.73rem;
     letter-spacing: 0.14em;
@@ -76,7 +76,7 @@ st.markdown("""
     gap: 14px;
     margin-bottom: 6px;
   }
-  .anduril-dot {
+  .modern-dot {
     width: 8px;
     height: 8px;
     background: #22C55E;
@@ -85,7 +85,7 @@ st.markdown("""
     box-shadow: 0 0 10px #22C55E;
     animation: pulseDot 2.2s infinite ease-in-out;
   }
-  .anduril-title {
+  .modern-title {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 2.0rem;
     font-weight: 700;
@@ -94,13 +94,13 @@ st.markdown("""
     margin: 0 0 4px 0;
     line-height: 1.15;
   }
-  .anduril-sub {
+  .modern-sub {
     font-size: 0.92rem;
     color: #94A3B8;
     margin: 0;
   }
 
-  /* Anduril Full-Width Architectural Top Navigation Bar */
+  /* Full-Width Modern Top Navigation Bar */
   .stTabs [data-baseweb="tab-list"] {
     display: grid !important;
     grid-template-columns: repeat(4, minmax(180px, 1fr)) !important;
@@ -163,7 +163,7 @@ st.markdown("""
     padding-left: 10px;
     letter-spacing: -0.01em;
   }
-  .anduril-badge-orange {
+  .modern-badge-orange {
     background: rgba(249, 115, 22, 0.16);
     color: #FB923C;
     border: 1px solid rgba(249, 115, 22, 0.45);
@@ -174,7 +174,7 @@ st.markdown("""
     font-weight: 600;
   }
 
-  /* Tactical KPI Telemetry Cards with Smooth Hover Transition */
+  /* KPI Telemetry Cards with Smooth Hover Transition */
   [data-testid="stMetric"] {
     position: relative;
     background: rgba(17, 23, 19, 0.92);
@@ -187,7 +187,7 @@ st.markdown("""
     transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.28s ease;
-    animation: andurilReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: modernReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
   [data-testid="stMetric"]:hover {
     transform: translateY(-3px);
@@ -208,14 +208,14 @@ st.markdown("""
     font-weight: 700;
   }
 
-  /* Dark-green tactical tables */
+  /* Dark-green tables */
   [data-testid="stDataFrame"], [data-testid="stTable"] {
     background: rgba(20, 83, 45, 0.22);
     border: 1px solid rgba(34, 197, 94, 0.28);
     border-left: 3px solid #22C55E;
     border-radius: 6px;
     padding: 10px;
-    animation: andurilReveal 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: modernReveal 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   /* Expanders, Alerts & Chat Containers */
@@ -224,7 +224,7 @@ st.markdown("""
     border: 1px solid rgba(34, 197, 94, 0.22);
     border-radius: 6px;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    animation: andurilReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: modernReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
   [data-testid="stExpander"]:hover {
     border-color: #F97316;
@@ -239,7 +239,7 @@ st.markdown("""
     padding: 8px 12px;
     margin-bottom: 8px;
     transition: border-color 0.28s ease, box-shadow 0.28s ease;
-    animation: andurilReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: modernReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   }
   [data-testid="stPlotlyChart"]:hover {
     border-color: rgba(249, 115, 22, 0.50);
@@ -249,17 +249,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<div class="anduril-hero">
-  <div class="anduril-meta">
-    <span class="anduril-dot"></span>
+<div class="modern-hero">
+  <div class="modern-meta">
+    <span class="modern-dot"></span>
     <span>SYS // E-PRESSO RETAIL INTELLIGENCE</span>
     <span>·</span>
     <span>STATUS: ACTIVE TELEMETRY</span>
     <span>·</span>
-    <span class="anduril-badge-orange">UPLOAD PRIORITY ARMED</span>
+    <span class="modern-badge-orange">UPLOAD PRIORITY ARMED</span>
   </div>
-  <h1 class="anduril-title">E-PRESSO // BI COMMAND &amp; ANALYTICAL AGENT</h1>
-  <p class="anduril-sub">Real-time multi-channel revenue telemetry, verified schema joins, and constrained function-calling AI analysis.</p>
+  <h1 class="modern-title">E-PRESSO // BI COMMAND &amp; ANALYTICAL AGENT</h1>
+  <p class="modern-sub">Real-time multi-channel revenue telemetry, verified schema joins, and constrained function-calling AI analysis.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -283,7 +283,7 @@ def secret(name: str, default=None):
 def gemini_client(api_key: str):
     from google import genai
     from google.genai import types
-    return genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=20_000))
+    return genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=45_000))
 
 
 def money(x: float) -> str:
@@ -657,7 +657,7 @@ with tab_assistant:
         with st.chat_message('assistant'):
             provider = 'Gemini' if answer['answered_by'].startswith('Gemini') else 'Rules'
             st.markdown(
-                f"**{answer['scope']}** · <span class='anduril-badge-orange'>Answered by: {provider}</span>",
+                f"**{answer['scope']}** · <span class='modern-badge-orange'>Answered by: {provider}</span>",
                 unsafe_allow_html=True,
             )
             st.markdown(f"**Findings**  \n{answer['findings']}")

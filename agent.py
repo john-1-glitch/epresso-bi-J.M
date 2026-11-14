@@ -155,12 +155,13 @@ GEMINI_BACKUP_MODEL = 'gemini-3.5-flash-lite'
 
 
 def _with_backup(call, model: str):
-    """Run call(model). If Gemini is overloaded or the free quota is used up, try the
-    backup model once. Returns (result, model_used); any other error is raised."""
+    """Run call(model). If Gemini is overloaded, times out, or the free quota is used up,
+    try the backup model once. Returns (result, model_used); any other error is raised."""
     try:
         return call(model), model
     except Exception as exc:
-        if getattr(exc, 'code', None) not in (429, 503) or model == GEMINI_BACKUP_MODEL:
+        is_timeout = 'timeout' in type(exc).__name__.lower()
+        if (getattr(exc, 'code', None) not in (429, 503) and not is_timeout) or model == GEMINI_BACKUP_MODEL:
             raise
         logger.warning('%s unavailable (%s); trying %s', model, exc, GEMINI_BACKUP_MODEL)
         return call(GEMINI_BACKUP_MODEL), GEMINI_BACKUP_MODEL
@@ -321,6 +322,7 @@ def llm_router(question: str, df, client, model: str = GEMINI_MODEL):
         tool_config=types.ToolConfig(function_calling_config=types.FunctionCallingConfig(
             mode='VALIDATED', allowed_function_names=list(TOOLS))),
         automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+        thinking_config=types.ThinkingConfig(thinking_budget=0),
         temperature=0,
     )
     response = client.models.generate_content(model=model, contents=question, config=config)
@@ -346,6 +348,7 @@ def llm_explain(question: str, result: ToolResult, flags: dict, client,
               f'{json.dumps(result.to_dict(), default=str)}\n\n' + '\n'.join(notes))
     config = types.GenerateContentConfig(
         system_instruction=EXPLAIN_PROMPT, temperature=0,
+        thinking_config=types.ThinkingConfig(thinking_budget=0),
         response_mime_type='application/json', response_json_schema=EXPLAIN_SCHEMA)
     response = client.models.generate_content(model=model, contents=prompt, config=config)
     parsed = json.loads(response.text)
