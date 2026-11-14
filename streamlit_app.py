@@ -262,9 +262,9 @@ def money(x: float) -> str:
     return f'${x:,.2f}'
 
 
-# Categorical colors in a fixed order: Dark Green (Website) & Slate (Brick & Mortar).
+# Categorical colors in a fixed order: Deep Tactical Green (Website) & High-Contrast Signal Amber/Orange (Brick & Mortar).
 # Each channel keeps its color whatever the filters.
-SERIES_COLORS = ['#14532D', '#64748B']
+SERIES_COLORS = ['#14532D', '#EA580C']
 BAR_COLOR = '#14532D'
 
 
@@ -414,14 +414,15 @@ def render_dashboard():
     # Chart 1: Multi-Layer Spline Area Trajectory (Revenue by Year & Channel)
     by_year = analytics.revenue_by_year_channel(view)
     fig = go.Figure()
-    fill_map = {'Website': 'rgba(20, 83, 45, 0.16)', 'Brick & Mortar': 'rgba(100, 116, 139, 0.12)'}
+    color_map = {'Website': '#14532D', 'Brick & Mortar': '#EA580C'}
+    fill_map = {'Website': 'rgba(22, 163, 74, 0.22)', 'Brick & Mortar': 'rgba(234, 88, 12, 0.16)'}
     for channel, part in by_year.groupby('StoreType'):
-        c_hex = channel_color.get(channel, BAR_COLOR)
+        c_hex = color_map.get(channel, channel_color.get(channel, BAR_COLOR))
         fig.add_trace(go.Scatter(
             x=part['Year'], y=part['Revenue'], name=channel, mode='lines+markers+text',
-            line=dict(width=3, color=c_hex, shape='spline'),
-            marker=dict(size=9, color='#FFFFFF', line=dict(width=2.5, color=c_hex)),
-            fill='tozeroy', fillcolor=fill_map.get(channel, 'rgba(20, 83, 45, 0.10)'),
+            line=dict(width=3.5, color=c_hex, shape='spline'),
+            marker=dict(size=10, color='#FFFFFF', line=dict(width=3, color=c_hex)),
+            fill='tozeroy', fillcolor=fill_map.get(channel, 'rgba(20, 83, 45, 0.14)'),
             text=[f'${v / 1e6:.2f}M' for v in part['Revenue']],
             textposition='top center', textfont=dict(size=11, color=c_hex),
             hovertemplate=f'<b>{channel}</b><br>%{{x}}: $%{{y:,.0f}}<extra></extra>'))
