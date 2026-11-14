@@ -1,6 +1,6 @@
 # Agent Testing Evidence
 
-All tests ran against the original E-Presso files (the Access database, the Stores CSV and the Survey workbook), with Gemini as the language model. Each answer's tool-call log records the function, its arguments and the raw result. Numerical results were checked independently with plain pandas (`scripts/independent_check.py` and a store-change pivot table). Before submitting, rerun Tests 1, 2 and 5 on the hosted app and attach screenshots of their tool-call logs.
+All tests ran against the E-Presso files on the hosted application (`https://epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app/`), with Gemini (`gemini-3.5-flash`) as the language model. Each answer's tool-call log records the function, its arguments and the raw result. Numerical results were checked independently with plain pandas (`scripts/independent_check.py` and a store-change pivot table). Screenshots of every test and its expanded tool-call log are embedded below.
 
 ## Agent test table
 
@@ -34,3 +34,23 @@ The first Gemini model we configured (`gemini-2.5-flash`) returned "404: no long
 ## How we know the answers come from real calculations
 
 Every answer's tool-call log shows the function name, its arguments and the raw JSON result, including `rows_used`. The scope line, the caveats and the decision limits are written by our code, not by the model. When Gemini words the explanation, the app checks every number in its text against the tool result (allowing for rounding, millions and percentages). If any number cannot be traced, the app shows the standard answer instead and says why. Test 5 is the direct proof: the same question and the same function returned a $1,000 higher answer as soon as the modified file was uploaded.
+
+## Screenshots & Tool-Call Log Evidence
+
+### Test 1 — Numerical Calculation (`How much revenue did the website generate in 2028?`)
+![Test 1 Answer](screenshots/test1_website_2028_answer.png)
+![Test 1 Tool-Call Log](screenshots/test1_website_2028_log.png)
+
+### Test 2 — Numerical Comparison (`Which store experienced the greatest percentage revenue decline?`)
+![Test 2 Answer](screenshots/test2_decline_answer.png)
+![Test 2 Tool-Call Log](screenshots/test2_decline_log.png)
+![Test 2 Tool-Call Log Store Details](screenshots/test2_decline_log_details.png)
+
+### Test 3 — Missing Information (`Which E-Presso store is the most profitable?`)
+![Test 3 Profit Refusal](screenshots/test3_profit_refusal.png)
+
+### Test 4 — Analytical Judgment (`Does higher customer satisfaction cause higher revenue?`)
+![Test 4 Satisfaction vs Revenue](screenshots/test4_satisfaction_causation.png)
+
+### Test 5 — Updated Data Baseline (`How much revenue did the website generate in 2025?`)
+![Test 5 Website 2025](screenshots/test5_website_2025.png)
