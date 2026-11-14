@@ -137,17 +137,36 @@ st.markdown("""
     transition: color 0.25s ease !important;
   }
   .stTabs [data-baseweb="tab"]:hover {
-    background: rgba(220, 252, 231, 0.45) !important;
+    background: rgba(255, 247, 237, 0.75) !important;
+    box-shadow: inset 0 -2px 0 #EA580C !important;
   }
   .stTabs [aria-selected="true"] {
     background: #14532D !important;
-    box-shadow: inset 0 -3px 0 #22C55E !important;
+    box-shadow: inset 0 -3px 0 #EA580C !important;
   }
   .stTabs [aria-selected="true"] p {
     color: #FFFFFF !important;
   }
   .stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] {
     display: none !important;
+  }
+
+  /* Subheaders across all pages with tactical orange accent bar */
+  .stApp h2, .stApp h3 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    border-left: 3px solid #EA580C;
+    padding-left: 10px;
+    letter-spacing: -0.01em;
+  }
+  .anduril-badge-orange {
+    background: rgba(234, 88, 12, 0.12);
+    color: #C2410C;
+    border: 1px solid rgba(234, 88, 12, 0.35);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.70rem;
+    font-weight: 600;
   }
 
   /* Tactical KPI Telemetry Cards with Smooth Hover Transition */
@@ -167,8 +186,9 @@ st.markdown("""
   }
   [data-testid="stMetric"]:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(20, 83, 45, 0.12);
-    border-color: #14532D;
+    box-shadow: 0 12px 28px rgba(234, 88, 12, 0.10);
+    border-color: rgba(234, 88, 12, 0.45);
+    border-top-color: #EA580C;
   }
   [data-testid="stMetricLabel"] {
     font-family: 'JetBrains Mono', monospace !important;
@@ -202,7 +222,10 @@ st.markdown("""
     animation: andurilReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
   [data-testid="stExpander"]:hover {
-    border-color: rgba(20, 83, 45, 0.45);
+    border-color: #EA580C;
+  }
+  [data-testid="stChatMessage"] {
+    border-left: 3px solid #EA580C;
   }
   [data-testid="stPlotlyChart"] {
     background: rgba(255, 255, 255, 0.92);
@@ -228,7 +251,7 @@ st.markdown("""
     <span>·</span>
     <span>STATUS: ACTIVE TELEMETRY</span>
     <span>·</span>
-    <span>DYNAMIC UPLOAD PRIORITY</span>
+    <span class="anduril-badge-orange">UPLOAD PRIORITY ARMED</span>
   </div>
   <h1 class="anduril-title">E-PRESSO // BI COMMAND &amp; ANALYTICAL AGENT</h1>
   <p class="anduril-sub">Real-time multi-channel revenue telemetry, verified schema joins, and constrained function-calling AI analysis.</p>
@@ -457,7 +480,7 @@ def render_dashboard():
     with right:
         by_month = analytics.revenue_by_month(view).copy()
         by_month['Cumulative Share'] = by_month['Share'].cumsum()
-        month_colors = ['#14532D' if s == by_month['Share'].max() else '#2E7D5B'
+        month_colors = ['#EA580C' if s == by_month['Share'].max() else '#14532D'
                         for s in by_month['Share']]
         fig = go.Figure()
         fig.add_trace(go.Bar(
@@ -468,8 +491,8 @@ def render_dashboard():
         fig.add_trace(go.Scatter(
             x=by_month['Month'], y=by_month['Cumulative Share'], name='Cumulative Share',
             yaxis='y2', mode='lines+markers',
-            line=dict(color='#0F172A', width=2.5, dash='dot'),
-            marker=dict(size=6, color='#16A34A'),
+            line=dict(color='#EA580C', width=2.5, dash='dot'),
+            marker=dict(size=7, color='#EA580C'),
             hovertemplate='<b>%{x}</b> Cumulative: %{y:.1%}<extra></extra>'))
         fig = style_chart(fig, '03 // MONTHLY SEASONALITY & CUMULATIVE CURVE', height=380)
         fig.update_yaxes(tickprefix='$', tickformat='~s')
@@ -623,7 +646,10 @@ with tab_assistant:
             st.write(item['question'])
         with st.chat_message('assistant'):
             provider = 'Gemini' if answer['answered_by'].startswith('Gemini') else 'Rules'
-            st.markdown(f"**{answer['scope']}** · *Answered by: {provider}*")
+            st.markdown(
+                f"**{answer['scope']}** · <span class='anduril-badge-orange'>Answered by: {provider}</span>",
+                unsafe_allow_html=True,
+            )
             st.markdown(f"**Findings**  \n{answer['findings']}")
             if answer['interpretation'] or answer['caveats']:
                 st.markdown('**Interpretation**  \n' + answer['interpretation'] + ''.join(
