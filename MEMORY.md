@@ -13,8 +13,8 @@
 - [x] **Repo & GitHub Setup:** Initialized local repo, merged starter template history from `origin/main`, Keychain auth working.
 - [x] **Stage A — Core Analytics & Validation (`508d3fa`):** Copied `analytics.py`, `scripts/export_access.py`, `scripts/independent_check.py`, `tests/test_epresso.py`. Verified **24/24 tests passing** (`test_epresso.py` + `test_analytics.py`) and pushed to `origin/main`.
 - [x] **Stage B — AI Agent & Guardrails (`67d1e95`):** Copied `agent.py`, `tests/test_tools.py`, `tests/test_llm.py`. Verified **91/91 tests passing** across the full suite and pushed to `origin/main`.
-- [x] **Stage C — Streamlit UI (code pushed):** Copied `streamlit_app.py` and added a short `Answered by: Gemini` / `Answered by: Rules` label at the top of each assistant reply. Ready to deploy on `share.streamlit.io` (with `GEMINI_API_KEY` in Secrets) and run the `$1,000` modified-data test.
-- [ ] **Stage D — Documentation & Submission:** Finalize `README.md` and `docs/` (`data_profile.md`, `powerbi_reconciliation.md`, `validation.md`, `agent_tests.md`, rewrite `reflection_draft.md` in own words, complete `team_contribution.md`).
+- [x] **Stage C — Streamlit UI (`710263e`):** Copied `streamlit_app.py` with short `Answered by: Gemini` / `Answered by: Rules` label. Deployed on `share.streamlit.io` with `GEMINI_API_KEY` in Secrets and verified file upload works.
+- [x] **Stage D — Documentation (pushed):** Copied `README.md` and `docs/` (`data_profile.md`, `powerbi_reconciliation.md`, `validation.md`, `agent_tests.md`, `reflection_draft.md`, `team_contribution.md`). Remaining: paste live URL in `README.md`, rewrite `reflection_draft.md` in own words, fill in `team_contribution.md`, and optionally add default data auto-loading.
 
 ## Key Decisions
 - **High-level understanding only:** Keep explanations concise and high-level (no line-by-line code defense walkthroughs).
