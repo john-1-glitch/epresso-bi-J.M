@@ -2,6 +2,7 @@
 dashboard and the analytical assistant. Calculations live in analytics.py and the
 assistant in agent.py."""
 import logging
+from pathlib import Path
 
 import pandas as pd
 import plotly.graph_objects as go
@@ -12,12 +13,86 @@ import analytics
 
 MAX_QUESTIONS = 15  # per-session limit for the assistant
 FILE_TYPES = ['csv', 'txt', 'tsv', 'xlsx', 'xls', 'accdb', 'mdb']
+RAW_DIR = Path(__file__).parent / 'data' / 'raw'
+DEFAULT_FILES = {
+    'sales': RAW_DIR / 'Support_EX_B_Sales.accdb',
+    'stores': RAW_DIR / 'Support_EX_B_Stores.csv',
+    'survey': RAW_DIR / 'Support_EX_B_Survey.xlsx',
+}
 
 logging.basicConfig(level=logging.INFO)  # merge checks are logged to the terminal
 
 st.set_page_config(page_title='E-Presso BI Analyst', layout='wide')
+
+st.markdown("""
+<style>
+  html, body, [class*="css"] {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+  }
+  .stApp {
+    background: #FFFFFF;
+  }
+  [data-testid="stSidebar"] {
+    background: rgba(244, 247, 245, 0.85);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-right: 1px solid rgba(20, 83, 45, 0.10);
+  }
+  /* Liquid glass KPI cards */
+  [data-testid="stMetric"] {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid rgba(20, 83, 45, 0.14);
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 8px 24px rgba(20, 83, 45, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  [data-testid="stMetricLabel"] {
+    color: #4B5563;
+    font-weight: 500;
+  }
+  [data-testid="stMetricValue"] {
+    color: #14532D;
+    font-weight: 700;
+  }
+  /* Glass tabs */
+  .stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background: rgba(244, 247, 245, 0.75);
+    backdrop-filter: blur(14px);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(20, 83, 45, 0.10);
+  }
+  .stTabs [data-baseweb="tab"] {
+    border-radius: 10px;
+    padding: 8px 16px;
+    color: #374151;
+    font-weight: 500;
+  }
+  .stTabs [aria-selected="true"] {
+    background: #14532D !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(20, 83, 45, 0.22);
+  }
+  .stTabs [data-baseweb="tab-highlight"] {
+    display: none;
+  }
+  /* Glass expanders & chat cards */
+  [data-testid="stExpander"], [data-testid="stChatMessage"] {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid rgba(20, 83, 45, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+  }
+</style>
+""", unsafe_allow_html=True)
+
 st.title('E-Presso BI Analyst')
-st.caption('Revenue analysis for E-Presso stores and the website, calculated from the files you upload.')
+st.caption('Revenue analysis for E-Presso stores and the website. Preloaded with default data—any file you upload takes priority.')
 
 
 @st.cache_data(show_spinner=False)
@@ -46,21 +121,22 @@ def money(x: float) -> str:
     return f'${x:,.2f}'
 
 
-# Categorical colors in a fixed order (colorblind-checked pair). Each channel keeps
-# its color whatever the filters, because color follows the entity, not its rank.
-SERIES_COLORS = ['#2a78d6', '#eb6834']
-BAR_COLOR = SERIES_COLORS[0]
+# Categorical colors in a fixed order: Dark Green (Website) & Slate (Brick & Mortar).
+# Each channel keeps its color whatever the filters.
+SERIES_COLORS = ['#14532D', '#64748B']
+BAR_COLOR = '#14532D'
 
 
 def style_chart(fig: go.Figure, title: str, height: int = 360) -> go.Figure:
     fig.update_layout(
-        title=dict(text=title, x=0, font=dict(size=16)), height=height,
+        title=dict(text=title, x=0, font=dict(size=16, color='#111827')), height=height,
         margin=dict(l=8, r=8, t=56, b=8), hovermode='closest',
+        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
         legend=dict(orientation='h', yanchor='bottom', y=1.0, xanchor='left', x=0),
-        barcornerradius=4, bargap=0.35,
+        barcornerradius=6, bargap=0.35,
     )
     fig.update_xaxes(showgrid=False)
-    fig.update_yaxes(gridcolor='rgba(128,128,128,0.2)', zeroline=False)
+    fig.update_yaxes(gridcolor='rgba(20, 83, 45, 0.08)', zeroline=False)
     return fig
 
 
@@ -79,10 +155,8 @@ def table_view(df: pd.DataFrame, money_cols=('Revenue',), pct_cols=('Share',)):
 
 with st.sidebar:
     st.header('Data')
-    st.caption('Upload one file per table: CSV, Excel or Access. In a workbook or Access '
-               'database, the sheet or table with the right columns is found automatically. '
-               'If you upload the Access database (Support_EX_B_Sales.accdb) as Sales, '
-               'Categories and Products are read from it too.')
+    st.caption('Default E-Presso files load automatically. Upload any file below to override '
+               'that table (your uploads always take priority).')
     uploaded = {}
     for role in analytics.REQUIRED_COLUMNS:
         label = analytics.TABLE_INFO[role][0]
@@ -90,16 +164,47 @@ with st.sidebar:
             label += ' (optional)'
         file = st.file_uploader(label, type=FILE_TYPES, key=f'upload_{role}')
         if file is not None:
-            uploaded[role] = file
+            uploaded[role] = (file.name, file.getvalue(), True)
 
-has_access = any(f.name.lower().endswith(analytics.ACCESS_EXT) for f in uploaded.values())
+# Build active inputs: uploaded files always win; fall back to defaults in data/raw/
+active_inputs = {}
+for role, (name, raw_bytes, _) in uploaded.items():
+    active_inputs[role] = (name, raw_bytes, True)
+
+for role, path in DEFAULT_FILES.items():
+    if role not in active_inputs and path.exists():
+        active_inputs[role] = (path.name, path.read_bytes(), False)
+
+# If Sales was overridden with a CSV (e.g. +$1,000 test) and Categories/Products weren't
+# uploaded, fall back to the default Access DB for those lookup tables.
+default_accdb = DEFAULT_FILES.get('sales')
+if default_accdb and default_accdb.exists():
+    sales_name = active_inputs.get('sales', ('',))[0].lower()
+    if not sales_name.endswith(analytics.ACCESS_EXT):
+        accdb_bytes = None
+        for role in ('categories', 'products'):
+            if role not in active_inputs:
+                if accdb_bytes is None:
+                    accdb_bytes = default_accdb.read_bytes()
+                active_inputs[role] = (default_accdb.name, accdb_bytes, False)
+
+with st.sidebar:
+    st.divider()
+    st.caption('Active sources')
+    for role in analytics.REQUIRED_COLUMNS:
+        if role in active_inputs:
+            name, _, is_upload = active_inputs[role]
+            badge = 'Uploaded' if is_upload else 'Default'
+            st.caption(f'**{analytics.TABLE_INFO[role][0]}:** {badge} (`{name}`)')
+
+has_access = any(name.lower().endswith(analytics.ACCESS_EXT) for name, _, _ in active_inputs.values())
 waiting = [analytics.TABLE_INFO[r][0] for r in analytics.REQUIRED_TABLES
-           if r not in uploaded and not (has_access and r in ('categories', 'products'))]
+           if r not in active_inputs and not (has_access and r in ('categories', 'products'))]
 if waiting:
     st.info('Upload these tables in the sidebar to begin: ' + ', '.join(waiting) + '.')
     st.stop()
 
-data = cached_dataset(tuple((role, f.name, f.getvalue()) for role, f in uploaded.items()))
+data = cached_dataset(tuple((role, name, raw_bytes) for role, (name, raw_bytes, _) in active_inputs.items()))
 if data['errors']:
     for message in data['errors']:
         st.error(message)
