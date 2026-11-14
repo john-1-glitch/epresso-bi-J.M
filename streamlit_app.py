@@ -58,26 +58,43 @@ st.markdown("""
   }
   /* Glass tabs */
   .stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
-    background: rgba(244, 247, 245, 0.75);
+    gap: 10px;
+    background: rgba(244, 247, 245, 0.85);
     backdrop-filter: blur(14px);
-    padding: 6px;
-    border-radius: 14px;
-    border: 1px solid rgba(20, 83, 45, 0.10);
+    padding: 8px;
+    border-radius: 16px;
+    border: 1px solid rgba(20, 83, 45, 0.12);
+    flex-wrap: wrap;
   }
   .stTabs [data-baseweb="tab"] {
-    border-radius: 10px;
-    padding: 8px 16px;
-    color: #374151;
+    border-radius: 12px;
+    padding: 10px 24px !important;
+    min-width: 150px;
+    justify-content: center;
+    color: #1F2937;
     font-weight: 500;
+    white-space: nowrap;
   }
   .stTabs [aria-selected="true"] {
     background: #14532D !important;
     color: #FFFFFF !important;
     box-shadow: 0 4px 12px rgba(20, 83, 45, 0.22);
   }
+  .stTabs [aria-selected="true"] p {
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+  }
   .stTabs [data-baseweb="tab-highlight"] {
     display: none;
+  }
+  /* Light green liquid-glass tables */
+  [data-testid="stDataFrame"], [data-testid="stTable"] {
+    background: rgba(220, 252, 231, 0.42);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(20, 83, 45, 0.18);
+    border-radius: 16px;
+    padding: 10px;
   }
   /* Glass expanders & chat cards */
   [data-testid="stExpander"], [data-testid="stChatMessage"] {
@@ -303,7 +320,7 @@ tab_data, tab_revenue, tab_dash, tab_assistant = st.tabs(
 
 with tab_data:
     st.subheader('Grain statements')
-    st.dataframe(analytics.grain_table(tables, data['sources']), hide_index=True)
+    st.dataframe(analytics.grain_table(tables, data['sources']), hide_index=True, use_container_width=True)
 
     st.subheader('Data quality')
     issues = {k: v for k, v in data['sales_issues'].items() if v}
@@ -342,9 +359,20 @@ with tab_revenue:
     c3.metric('Rows excluded (blank revenue)', f"{summary['rows_excluded']:,}")
 
     st.subheader('Revenue by year')
-    st.dataframe(pd.DataFrame({'Year': list(summary['by_year']),
-                               'Revenue': [money(v) for v in summary['by_year'].values()]}),
-                 hide_index=True)
+    by_year_items = list(summary['by_year'].items())
+    if by_year_items:
+        year_cols = st.columns(len(by_year_items))
+        total_rev = summary['total'] or 0.0
+        for col, (yr, val) in zip(year_cols, by_year_items):
+            share_pct = f'{val / total_rev:.1%} of total' if total_rev else 'n/a'
+            col.metric(str(yr), money(val), delta=share_pct, delta_color='off')
+        with st.expander('View revenue by year as table'):
+            st.dataframe(pd.DataFrame({
+                'Year': [str(yr) for yr, _ in by_year_items],
+                'Revenue': [money(val) for _, val in by_year_items],
+                'Share of total': [f'{val / total_rev:.1%}' if total_rev else 'n/a'
+                                   for _, val in by_year_items],
+            }), hide_index=True, use_container_width=True)
 
     st.subheader('Merge checks')
     st.caption('Every lookup table is joined to Sales one at a time. Each join must leave '
@@ -357,7 +385,7 @@ with tab_revenue:
         'Revenue after': money(r['sum_after']),
         'Unmatched rows': r['unmatched_rows'],
         'Status': 'Changed' if r['changed'] else 'OK',
-    } for r in reports]), hide_index=True)
+    } for r in reports]), hide_index=True, use_container_width=True)
     for r in reports:
         if r['warning']:
             (st.error if r['changed'] else st.warning)(f"{r['merge']}: {r['warning']}")
