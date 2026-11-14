@@ -2,27 +2,31 @@
 
 ## What this application does
 
-E-Presso BI Analyst lets a manager upload the company's sales, store and survey files and see where revenue comes from: by year, by channel (website or physical stores), by product category and by store. It recalculates everything from the uploaded files, so a corrected or updated file changes every number on screen without touching the code. A built-in assistant answers plain-English questions such as "Is the online shop growing?" by running one of a small set of approved calculations and showing exactly what it ran.
+E-Presso BI Analyst is an interactive business intelligence dashboard and tool-based AI analytical assistant built for E-Presso retail managers. It opens preloaded with the company's sales, store, category, product, and survey datasets so every KPI, chart, and table works immediately on load. Any replacement file uploaded in the sidebar automatically overrides the default table and recalculates every number on screen without touching the code. A built-in analytical assistant answers plain-English business questions (such as *"Which sales channel experienced the greatest revenue growth?"*) by invoking approved Python functions and showing the exact calculation log behind every answer.
 
 ## Live app
 
 **[epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app](https://epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app/)**
 
-The app may take a moment to wake up if nobody has used it recently. It opens preloaded with the default E-Presso dataset from `data/raw/`, and any file you upload in the sidebar immediately overrides that table.
+The app may take a moment to wake up if nobody has used it recently. It opens preloaded with the default E-Presso dataset from `data/raw/`, and any file you upload in the sidebar immediately takes priority over the default for that table.
 
 ## How to use it
 
-By default, the app loads the original course files from `data/raw/` automatically. To test modified or updated data (such as the `+$1,000` test), upload a replacement file into the corresponding sidebar slot—uploaded files always take priority:
+By default, the app loads the original course files from `data/raw/` automatically. To test modified or updated data (such as the `+$1,000` test), upload a replacement file into the corresponding sidebar slot—uploaded files always take priority, and the sidebar's **Active sources** list shows whether each table is using its `Default` or `Uploaded` file:
 
-| Upload box | File | Notes |
+| Upload box | Default file in `data/raw/` | Notes |
 |---|---|---|
-| Sales | `Support_EX_B_Sales.accdb` | The app reads the Sales, Categories and Products tables from the database |
-| Stores | `Support_EX_B_Stores.csv` | Tab-separated; the app detects the delimiter |
-| Survey Results (optional) | `Support_EX_B_Survey.xlsx` | The app finds the "Survey Results" sheet and its header row on its own |
+| Sales | `Support_EX_B_Sales.accdb` | Reads Sales, Categories, and Products from the Access database; if you upload a modified `Sales.csv` alone, Categories and Products still fall back to the default Access database automatically |
+| Stores | `Support_EX_B_Stores.csv` | Tab-separated; the app auto-detects the delimiter |
+| Survey Results (optional) | `Support_EX_B_Survey.xlsx` | Automatically locates the "Survey Results" sheet and promotes row 3 to the header |
 
-CSV or Excel exports also work, one per table (for example `Sales.csv`, `Categories.csv` and `Products.csv` made with `scripts/export_access.py`). In a workbook or database, the app uses the sheet or table that has the required columns. It names any missing column instead of crashing, and an updated file with added or removed rows, blanks, or new stores, years or categories is recalculated without code changes.
+CSV or Excel exports also work, one per table (for example `Sales.csv`, `Categories.csv`, and `Products.csv` exported with `scripts/export_access.py`). In a workbook or database, the app selects the sheet or table containing the required columns, names any missing required column cleanly instead of crashing, and recalculates everything dynamically when rows, stores, categories, or years change.
 
-The app is organized into four top-level views in a sleek, modern dark-mode layout. **01 // Command Dashboard** is the start page, featuring Year, Channel, Store and Category filters (all built dynamically from the loaded data), four KPIs and four interactive charts (channel trajectory, product categories, monthly seasonality with a cumulative curve, and top stores), each with a table view. **02 // Analytical Agent** answers plain-English business questions (up to 15 per session) and displays a clear badge showing whether Gemini or the rules engine answered. **03 // Revenue & Merge Audit** shows total revenue, revenue by year cards, and the `check_merge()` verification table for every join. **04 // Data & Quality** shows the grain of each table, a data quality summary and a profile of any table.
+The interface is organized into four top-level views in a sleek, modern dark-mode layout:
+1. **`01 // COMMAND DASHBOARD` (Start Page):** Interactive `Year`, `Channel`, `Store`, and `Category` filters (all built dynamically from the loaded data), four KPI telemetry cards (`Revenue in Selection`, `Website Channel`, `Period Trajectory`, and `Active Stores`), and four interactive Plotly visualizations (`01 // Channel Trajectory`, `02 // Product Category Telemetry`, `03 // Monthly Seasonality & Cumulative Curve`, and `04 // Top Performing Stores in Selection`), with expandable table views.
+2. **`02 // ANALYTICAL AGENT`:** Conversational assistant (up to 15 questions per session) with a prominent **`Answered by: Gemini`** or **`Answered by: Rules`** badge on the top line of every reply and an expandable **Tool-call log**.
+3. **`03 // REVENUE & MERGE AUDIT`:** Total revenue summary, interactive year-by-year revenue cards (plus table view), and the `check_merge()` verification audit for every table join.
+4. **`04 // DATA & QUALITY`:** Table grain statements, automated data-quality checks, and an interactive table profiler (rows, columns, duplicates, missing values, and data types).
 
 ## Data model
 
@@ -36,7 +40,7 @@ Every lookup table joins to Sales many-to-one on a unique key, so no join can du
 | Products | one product | `Product ID` | 20 | No |
 | Survey Results | one store's survey in one year | `Survey ID` | 105 | No |
 
-The Sales row count confirms its grain: 21 stores × 20 products × 60 months = 25,200 rows. Sales joins to Stores on `Store ID`, to Categories on `Category ID` and to Products on `Product ID`. Each join runs through `check_merge()`, which compares rows and revenue before and after and counts unmatched keys. On the real data, all three joins keep 25,200 rows and $42,174,440, with no unmatched keys.
+The Sales row count confirms its grain: 21 stores × 20 products × 60 months = 25,200 rows. Sales joins to Stores on `Store ID`, to Categories on `Category ID`, and to Products on `Product ID`. Each join runs through `check_merge()`, which compares rows and revenue before and after and counts unmatched keys. On the real data, all three joins keep 25,200 rows and $42,174,440, with no unmatched keys.
 
 Survey Results is deliberately not joined to Sales. It is one row per store per year, so joining it would repeat each satisfaction score on 240 sales rows. Full profile: [`docs/data_profile.md`](docs/data_profile.md).
 
@@ -44,15 +48,15 @@ Survey Results is deliberately not joined to Sales. It is one row per store per 
 
 **Revenue** is the sum of the `Revenue` column in the Sales table for the rows in scope. Rows with blank or non-numeric revenue are left out of the sum and counted in the Data Quality section; no row is ever deleted. **Share** is a group's revenue divided by the revenue of everything in the current scope. **Channel** is the store's `StoreType`: "Website" for online sales and "Brick & Mortar" for the 20 physical stores.
 
-Revenue is not profit. The data has no costs, discounts or margins, so nothing in this app describes profitability.
+Revenue is not profit. The data has no costs, discounts, or margins, so nothing in this app describes profitability.
 
 ## Assistant
 
-We built **Option A, a live language-model agent** using Google Gemini with function calling, with the rules-based assistant (Option B) as its automatic fallback. Every answer says which one answered.
+I built **Option A, a live language-model agent** using Google Gemini with function calling, with the rules-based assistant (Option B) as its automatic fallback. Every answer displays a top-line badge (`Answered by: Gemini` or `Answered by: Rules`) as well as the specific model details at the bottom.
 
-- **Gemini mode (when `GEMINI_API_KEY` is set):** Gemini reads the question and chooses one approved function and its arguments through function calling in `VALIDATED` mode, which constrains it to the listed functions and their schemas. Our code runs the function on the loaded data. Gemini then writes Findings, Interpretation and Next steps from the tool result. Before the app shows that text, it checks every number in it against the tool result (allowing for rounding, millions and percentages); if any number cannot be traced, the app shows the standard answer instead and says why. Gemini never sees the data itself.
-- **Backup model:** the free tier allows about 20 requests per model per day and the main model (`gemini-3.5-flash`) is sometimes overloaded. On a 429 or 503 error the app retries once on `gemini-3.5-flash-lite`.
-- **Rules-based mode (no key, or Gemini still fails):** keyword rules choose the function and a template writes the answer from the result. The answer shows a note explaining the switch.
+- **Gemini mode (when `GEMINI_API_KEY` is set):** Gemini reads the question and chooses one approved function and its arguments through function calling in `VALIDATED` mode, which constrains it to the listed functions and their schemas (with `thinking_budget=0` for fast ~2–3 second responses). Our code runs the function on the loaded data. Gemini then writes Findings, Interpretation, and Next steps from the tool result. Before the app shows that text, `unsupported_numbers()` checks every number in it against the tool result (allowing for rounding, thousands, millions, and percentages); if any number cannot be traced, the app shows the deterministic standard answer instead and explains why. Gemini never sees the raw dataset.
+- **Backup model:** The free tier allows about 20 requests per model per day. On a `429` (quota), `503` (overload), or timeout error, `_with_backup()` automatically retries once on `gemini-3.5-flash-lite`.
+- **Rules-based mode (no key, or Gemini still fails):** Keyword rules choose the function and a deterministic template writes the answer from the result, displaying a notice explaining the switch.
 
 | Tool | What it calculates | Arguments |
 |---|---|---|
@@ -65,54 +69,55 @@ We built **Option A, a live language-model agent** using Google Gemini with func
 | `revenue_change_by_store` | Each store's change between two years, the largest % decline and growth, or a plain statement that no store declined | start_year, end_year, channel |
 | `revenue_change_by_channel` | Each channel's change between two years and which grew the most | start_year, end_year, store |
 | `satisfaction_vs_revenue` | Correlation between store-year revenue and survey satisfaction, excluding store-years without a score | year |
-| `data_quality_report` | Rows, duplicates and missing values | none |
+| `data_quality_report` | Rows, duplicates, and missing values | none |
 
-Every tool checks its arguments against the loaded data and returns a clear error for an unknown year, channel or store, or for a city that matches two stores; it never guesses. Every result follows the same contract: `tool`, `value`, `definition`, `scope`, `rows_used` and `caveats`. Each answer starts with its scope and says it uses the full loaded dataset; if dashboard filters are set, the Assistant tab says they do not apply. Then come Findings, Interpretation, Next steps and an expandable tool-call log with the function, arguments, raw result and which model answered. Sessions are limited to 15 questions.
+Every tool checks its arguments against the loaded data and returns a clear error for an unknown year, channel, or store, or for a city that matches two stores; it never guesses. Every result follows the same contract: `tool`, `value`, `definition`, `scope`, `rows_used`, and `caveats`. Each answer starts with its scope and notes that it uses the full loaded dataset (if dashboard filters are active, the Assistant tab reminds the user that sidebar filters do not apply to chat). Then come Findings, Interpretation, Next steps, and an expandable tool-call log showing the function, arguments, raw JSON result, and model used. Sessions are limited to 15 questions.
 
-**Limits it enforces:** profit, margin, forecast and customer-level questions are refused before any model is called, with the reason and a list of what it can answer. "Why" and "does X cause Y" questions get the relevant evidence plus a statement that the data shows association, not cause. "Should we..." questions get the evidence, "No recommendation is supported by this data", and the information a decision would need (expenses, profitability, leases, staffing, customer behavior). Scope, caveats and these limits are written by our code, not by the model.
+**Limits it enforces:** Profit, margin, forecast, and customer-level questions are refused before any model is called, with the reason and a list of supported topics. "Why" and "does X cause Y" questions return the relevant evidence plus a clear statement that the data shows association, not causation. "Should we..." decision questions return the evidence, state *"No recommendation is supported by this data"*, and list the missing information a real decision would require (operating expenses, store profitability, lease obligations, staffing, customer behavior). Scope, caveats, and these limits are enforced by Python code, not left to the model.
 
-**What it is not allowed to do:** run or write code, use `eval()` or `exec()`, write SQL or pandas, change the loaded data, or state a number our functions did not calculate.
+**What it is not allowed to do:** Run or write code, use `eval()` or `exec()`, write free-form SQL or pandas, mutate the loaded data, or state a number our functions did not calculate.
 
 ## Validation
 
-Full evidence: [`docs/validation.md`](docs/validation.md) (Power BI table, independent check, $1,000 test record) and [`docs/agent_tests.md`](docs/agent_tests.md) (five agent tests, two documented fixes with retests).
+Full evidence: [`docs/validation.md`](docs/validation.md) (Power BI comparison table, independent check, and `$1,000` test record with before/after screenshots) and [`docs/agent_tests.md`](docs/agent_tests.md) (five required agent tests plus documented fixes and retests).
 
-**Power BI comparison.** All five required measures plus revenue by category match our Power BI report exactly: total $42,174,440, Website $27,218,880, Brick & Mortar $14,955,560, every year, and every month's share (December is 25.61%). All 25,200 sales rows are identical row by row. One difference in design is documented: Power BI links Sales to Stores through the survey table, while the app joins Sales to Stores directly. Details: [`docs/powerbi_reconciliation.md`](docs/powerbi_reconciliation.md).
+**Power BI comparison.** All five required measures plus revenue by category match our Power BI report (`Fleischnamnn_Mey_NP_EX_B_EPresso.pbix`) exactly: total $42,174,440, Website $27,218,880, Brick & Mortar $14,955,560, every year, and every month's share (December is 25.61%). All 25,200 sales rows are identical row by row. One modeling difference is documented in [`docs/powerbi_reconciliation.md`](docs/powerbi_reconciliation.md): Power BI links Sales to Stores through the survey table, whereas this app joins Sales to Stores directly.
 
-**Independent check.** `scripts/independent_check.py` recalculates every measure with plain pandas and none of the app's code. It gives the same results.
+**Independent check.** [`scripts/independent_check.py`](scripts/independent_check.py) recalculates every measure with plain pandas and none of the app's code, producing identical results.
 
-**$1,000 test.** Adding $1,000 to Sales row S0020250101 and uploading the copy in the same session raised the total to exactly $42,175,440. The Website 2025 chart point, the January bar, the Beans bar and the 2025 + Website filter each rose by $1,000, while Brick & Mortar, 2026 and store SH01 did not change. The assistant's answer moved by $1,000. There were no code changes and no restart, because the cache is keyed on each file's contents.
+**$1,000 test.** Adding $1,000 to Sales row `S0020250101` and uploading the modified file in the sidebar raised Total Revenue from $42,174,440.00 to $42,175,440.00 and Website revenue from $27,218,880.00 to $27,219,880.00 immediately—with no code changes and no restart—because `@st.cache_data` is keyed on the uploaded file bytes. Before and after screenshots are embedded in [`docs/validation.md`](docs/validation.md).
 
-**Automated tests.** 91 tests in `tests/` run on a six-row dataset whose answers are worked out by hand in the test file. They cover totals, merge checks (including a duplicated store key and an unknown store), missing columns, Excel header detection and Access upload, filters, every assistant tool, the dispatcher, both routers, the number check, the backup model and the Gemini fallback (with a fake client, so the tests run offline).
+**Automated tests.** 91 unit tests in `tests/` run on a hand-verifiable six-row synthetic dataset. They cover revenue totals, merge checks (including duplicate store key fan-out and unmatched keys), missing columns, Excel header promotion, Access upload, filters, all 10 assistant tools, the dispatcher, both routers, the number verifier, backup-model retry, and rules fallback.
 
 ## Limitations
 
 - **Revenue is not profit.** There are no costs or margins, so the app cannot say which stores or products are most profitable.
-- **No causes.** The data shows what happened and what moves together, not why. For example, website revenue more than doubled while in-store revenue fell, but the data cannot say why.
-- **Monthly totals only.** Sales are monthly totals per store and product, so there is no customer, transaction or daily detail.
-- **Channel is a mapping.** The data has no channel column; channel is the store type, and the website is treated as one store.
-- **Satisfaction is thin evidence.** It is one annual score per store, the website is not surveyed, and the correlation with revenue is weak (0.235).
-- **Gemini availability.** The free tier allows about 20 requests per model per day, and each question uses two. When both models are out of quota or busy, the rules-based assistant answers.
+- **No causes.** The data shows what happened and what moves together, not why.
+- **Monthly totals only.** Sales are monthly totals per store and product, with no customer, transaction, or daily detail.
+- **Channel is a mapping.** Channel comes from `StoreType` ("Website" for store `SH00` vs. "Brick & Mortar" for stores `SH01`–`SH20`).
+- **Satisfaction is thin evidence.** It is one annual score per physical store (the website is not surveyed), and correlation with revenue is weak (`r = 0.235`).
+- **Gemini free-tier quota.** Free-tier access allows ~20 requests per model per day (2 calls per question). When quota is exhausted, the app automatically switches to the backup model and then the rules-based assistant.
 
 ## Files
 
-| File | Purpose |
+| File / Folder | Purpose |
 |---|---|
-| `streamlit_app.py` | Screen layout and interaction |
-| `analytics.py` | Loading (CSV, Excel, Access), cleaning, merge checks, metrics and analytical tools (no Streamlit code) |
-| `agent.py` | Tool registry, dispatcher, rules router, Gemini router and explanation, number check |
-| `tests/` | Tests with hand-checkable answers |
-| `scripts/export_access.py` | Export of the Access tables to CSV |
-| `scripts/independent_check.py` | Independent recalculation of the validation measures with plain pandas |
-| `docs/` | Data profile, Power BI reconciliation, validation evidence, agent tests, reflection draft, team contribution |
-| `requirements.txt` | Packages the hosted app needs |
+| `streamlit_app.py` | Sleek modern dark-mode UI, preloaded data + upload override, interactive filters, 4 KPIs, 4 Plotly charts, and chat interface |
+| `analytics.py` | Loading (CSV, Excel, Access), cleaning, `check_merge()`, dashboard metrics, and 10 `ToolResult` functions (no Streamlit code) |
+| `agent.py` | Tool registry, `run_tool()` dispatcher, rules router, Gemini `VALIDATED` function-calling router + explanation, backup retry, and number guard |
+| `.streamlit/config.toml` | Dark-mode theme palette and typography settings |
+| `data/raw/` | Preloaded default E-Presso files (`Support_EX_B_Sales.accdb`, `Support_EX_B_Stores.csv`, `Support_EX_B_Survey.xlsx`) |
+| `tests/` | 91 `pytest` unit tests on hand-checkable synthetic data and mocked LLM responses |
+| `scripts/export_access.py` | Exports the Access database tables to CSV |
+| `scripts/independent_check.py` | Independent recalculation of the 5 validation measures using plain pandas |
+| `docs/` | Data profile, Power BI reconciliation, validation evidence (with `docs/screenshots/`), agent tests, project reflection, and team contribution statement |
+| `requirements.txt` | Python packages required by the hosted app |
 
 ## Run it
 
-Hosted: deploy from this repository on share.streamlit.io with main file `streamlit_app.py` and Python 3.11 or newer.
-
-Locally (optional): `pip install -r requirements-dev.txt`, then `streamlit run streamlit_app.py`. Run the tests with `pytest`.
+- **Hosted:** Deployed at [epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app](https://epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app/) from `main` with main file `streamlit_app.py`.
+- **Locally (optional):** `pip install -r requirements-dev.txt`, then `streamlit run streamlit_app.py`. Run the test suite with `pytest`.
 
 ## Secrets
 
-Never commit API keys. Copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml` (which git ignores) and add `GEMINI_API_KEY`. On Streamlit Community Cloud, paste the same line into App settings → Secrets. Without a key, the app runs the rules-based assistant.
+Never commit API keys. Copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml` (gitignored) and set `GEMINI_API_KEY`. On Streamlit Community Cloud, paste `GEMINI_API_KEY = "your-key"` into **App settings → Secrets**. Without a key, the app automatically runs the rules-based assistant.
