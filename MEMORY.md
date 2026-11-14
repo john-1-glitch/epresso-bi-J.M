@@ -5,6 +5,7 @@
 ## Repo & Environment
 - **Local path:** `/Users/jonathanCheckmark/Documents/ClaudeOS/MSU/epresso-bi-J.M`
 - **GitHub remote:** `https://github.com/john-1-glitch/epresso-bi-J.M.git` (branch `main`, macOS Keychain configured)
+- **Live app URL:** `https://epreapp-bi-jm-7ysc8gurgjgzaxkaez96kq.streamlit.app/`
 - **Workflow:** Push to `origin/main` after every completed stage.
 - **Test runner:** `"../Data analytics/.venv/bin/python" -m pytest -v`
 - **Source reference repo:** `../Data analytics/` (V1 working project)
@@ -14,7 +15,7 @@
 - [x] **Stage A — Core Analytics & Validation (`508d3fa`):** Copied `analytics.py`, `scripts/export_access.py`, `scripts/independent_check.py`, `tests/test_epresso.py`. Verified **24/24 tests passing** (`test_epresso.py` + `test_analytics.py`) and pushed to `origin/main`.
 - [x] **Stage B — AI Agent & Guardrails (`67d1e95`):** Copied `agent.py`, `tests/test_tools.py`, `tests/test_llm.py`. Verified **91/91 tests passing** across the full suite and pushed to `origin/main`.
 - [x] **Stage C — Streamlit UI (`710263e`):** Copied `streamlit_app.py` with short `Answered by: Gemini` / `Answered by: Rules` label. Deployed on `share.streamlit.io` with `GEMINI_API_KEY` in Secrets and verified file upload works.
-- [x] **Stage D — Documentation (pushed):** Copied `README.md` and `docs/` (`data_profile.md`, `powerbi_reconciliation.md`, `validation.md`, `agent_tests.md`, `reflection_draft.md`, `team_contribution.md`). Remaining: paste live URL in `README.md`, rewrite `reflection_draft.md` in own words, fill in `team_contribution.md`, and optionally add default data auto-loading.
+- [x] **Stage D — Documentation (`3c8124c`):** Added `README.md` (with live URL) and `docs/`. Remaining: run the `$1,000` test on the live app, rewrite `reflection_draft.md` in own words, fill in `team_contribution.md`, and optionally add default data auto-loading.
 
 ## Key Decisions
 - **High-level understanding only:** Keep explanations concise and high-level (no line-by-line code defense walkthroughs).
