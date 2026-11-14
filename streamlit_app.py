@@ -39,37 +39,38 @@ st.markdown("""
 
   html, body, [class*="css"] {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #F1F5F2;
   }
   .stApp {
-    background-color: #FFFFFF;
+    background-color: #0A0D0B;
     background-image:
-      linear-gradient(to right, rgba(20, 83, 45, 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(20, 83, 45, 0.04) 1px, transparent 1px);
+      linear-gradient(to right, rgba(34, 197, 94, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(34, 197, 94, 0.05) 1px, transparent 1px);
     background-size: 40px 40px;
   }
   [data-testid="stSidebar"] {
-    background: rgba(244, 247, 245, 0.94);
+    background: rgba(15, 20, 17, 0.96);
     backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(20, 83, 45, 0.18);
+    border-right: 1px solid rgba(34, 197, 94, 0.20);
   }
 
   /* Anduril Tactical Hero Banner */
   .anduril-hero {
     position: relative;
-    background: linear-gradient(135deg, rgba(255,255,255,0.96) 0%, rgba(240,253,244,0.88) 100%);
-    border: 1px solid rgba(20, 83, 45, 0.28);
-    border-left: 4px solid #14532D;
+    background: linear-gradient(135deg, rgba(17, 23, 19, 0.96) 0%, rgba(20, 48, 32, 0.78) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    border-left: 4px solid #22C55E;
     padding: 22px 28px;
     margin-bottom: 20px;
     animation: andurilReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 10px 30px rgba(20, 83, 45, 0.05);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
   }
   .anduril-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.73rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #14532D;
+    color: #4ADE80;
     display: flex;
     align-items: center;
     gap: 14px;
@@ -78,10 +79,10 @@ st.markdown("""
   .anduril-dot {
     width: 8px;
     height: 8px;
-    background: #16A34A;
+    background: #22C55E;
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 8px #16A34A;
+    box-shadow: 0 0 10px #22C55E;
     animation: pulseDot 2.2s infinite ease-in-out;
   }
   .anduril-title {
@@ -89,13 +90,13 @@ st.markdown("""
     font-size: 2.0rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    color: #0B130E;
+    color: #F8FAFC;
     margin: 0 0 4px 0;
     line-height: 1.15;
   }
   .anduril-sub {
     font-size: 0.92rem;
-    color: #4B5563;
+    color: #94A3B8;
     margin: 0;
   }
 
@@ -105,9 +106,9 @@ st.markdown("""
     grid-template-columns: repeat(4, minmax(180px, 1fr)) !important;
     width: 100% !important;
     gap: 0px !important;
-    background: #FFFFFF !important;
+    background: #111613 !important;
     padding: 0 !important;
-    border: 1px solid rgba(20, 83, 45, 0.28) !important;
+    border: 1px solid rgba(34, 197, 94, 0.28) !important;
     border-radius: 4px !important;
     overflow: hidden;
     margin-bottom: 18px;
@@ -118,8 +119,8 @@ st.markdown("""
     margin: 0 !important;
     padding: 0 18px !important;
     border-radius: 0 !important;
-    border-right: 1px solid rgba(20, 83, 45, 0.16) !important;
-    background: rgba(255, 255, 255, 0.92) !important;
+    border-right: 1px solid rgba(34, 197, 94, 0.16) !important;
+    background: rgba(17, 22, 19, 0.95) !important;
     justify-content: center !important;
     transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
@@ -132,17 +133,20 @@ st.markdown("""
     font-weight: 600 !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
-    color: #1F2937 !important;
+    color: #94A3B8 !important;
     white-space: nowrap !important;
     transition: color 0.25s ease !important;
   }
   .stTabs [data-baseweb="tab"]:hover {
-    background: rgba(255, 247, 237, 0.75) !important;
-    box-shadow: inset 0 -2px 0 #EA580C !important;
+    background: rgba(234, 88, 12, 0.14) !important;
+    box-shadow: inset 0 -2px 0 #F97316 !important;
+  }
+  .stTabs [data-baseweb="tab"]:hover p {
+    color: #F8FAFC !important;
   }
   .stTabs [aria-selected="true"] {
     background: #14532D !important;
-    box-shadow: inset 0 -3px 0 #EA580C !important;
+    box-shadow: inset 0 -3px 0 #F97316 !important;
   }
   .stTabs [aria-selected="true"] p {
     color: #FFFFFF !important;
@@ -154,14 +158,15 @@ st.markdown("""
   /* Subheaders across all pages with tactical orange accent bar */
   .stApp h2, .stApp h3 {
     font-family: 'Space Grotesk', sans-serif !important;
-    border-left: 3px solid #EA580C;
+    color: #F8FAFC !important;
+    border-left: 3px solid #F97316;
     padding-left: 10px;
     letter-spacing: -0.01em;
   }
   .anduril-badge-orange {
-    background: rgba(234, 88, 12, 0.12);
-    color: #C2410C;
-    border: 1px solid rgba(234, 88, 12, 0.35);
+    background: rgba(249, 115, 22, 0.16);
+    color: #FB923C;
+    border: 1px solid rgba(249, 115, 22, 0.45);
     padding: 2px 8px;
     border-radius: 3px;
     font-family: 'JetBrains Mono', monospace;
@@ -172,13 +177,13 @@ st.markdown("""
   /* Tactical KPI Telemetry Cards with Smooth Hover Transition */
   [data-testid="stMetric"] {
     position: relative;
-    background: rgba(255, 255, 255, 0.90);
+    background: rgba(17, 23, 19, 0.92);
     backdrop-filter: blur(16px);
-    border: 1px solid rgba(20, 83, 45, 0.22);
-    border-top: 3px solid #14532D;
+    border: 1px solid rgba(34, 197, 94, 0.24);
+    border-top: 3px solid #22C55E;
     border-radius: 4px;
     padding: 16px 20px;
-    box-shadow: 0 6px 20px rgba(20, 83, 45, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.40);
     transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.28s ease;
@@ -186,28 +191,28 @@ st.markdown("""
   }
   [data-testid="stMetric"]:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(234, 88, 12, 0.10);
-    border-color: rgba(234, 88, 12, 0.45);
-    border-top-color: #EA580C;
+    box-shadow: 0 12px 28px rgba(249, 115, 22, 0.16);
+    border-color: rgba(249, 115, 22, 0.55);
+    border-top-color: #F97316;
   }
   [data-testid="stMetricLabel"] {
     font-family: 'JetBrains Mono', monospace !important;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-size: 0.72rem !important;
-    color: #4B5563;
+    color: #94A3B8 !important;
   }
   [data-testid="stMetricValue"] {
     font-family: 'Space Grotesk', sans-serif !important;
-    color: #14532D;
+    color: #4ADE80 !important;
     font-weight: 700;
   }
 
-  /* Light-green tactical tables */
+  /* Dark-green tactical tables */
   [data-testid="stDataFrame"], [data-testid="stTable"] {
-    background: rgba(220, 252, 231, 0.45);
-    border: 1px solid rgba(20, 83, 45, 0.24);
-    border-left: 3px solid #14532D;
+    background: rgba(20, 83, 45, 0.22);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    border-left: 3px solid #22C55E;
     border-radius: 6px;
     padding: 10px;
     animation: andurilReveal 0.38s cubic-bezier(0.16, 1, 0.3, 1);
@@ -215,21 +220,21 @@ st.markdown("""
 
   /* Expanders, Alerts & Chat Containers */
   [data-testid="stExpander"], [data-testid="stChatMessage"] {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(20, 83, 45, 0.18);
+    background: rgba(17, 23, 19, 0.92);
+    border: 1px solid rgba(34, 197, 94, 0.22);
     border-radius: 6px;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
     animation: andurilReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
   [data-testid="stExpander"]:hover {
-    border-color: #EA580C;
+    border-color: #F97316;
   }
   [data-testid="stChatMessage"] {
-    border-left: 3px solid #EA580C;
+    border-left: 3px solid #F97316;
   }
   [data-testid="stPlotlyChart"] {
-    background: rgba(255, 255, 255, 0.92);
-    border: 1px solid rgba(20, 83, 45, 0.16);
+    background: rgba(17, 23, 19, 0.92);
+    border: 1px solid rgba(34, 197, 94, 0.20);
     border-radius: 6px;
     padding: 8px 12px;
     margin-bottom: 8px;
@@ -237,8 +242,8 @@ st.markdown("""
     animation: andurilReveal 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   }
   [data-testid="stPlotlyChart"]:hover {
-    border-color: rgba(20, 83, 45, 0.42);
-    box-shadow: 0 8px 24px rgba(20, 83, 45, 0.07);
+    border-color: rgba(249, 115, 22, 0.50);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   }
 </style>
 """, unsafe_allow_html=True)
@@ -285,22 +290,26 @@ def money(x: float) -> str:
     return f'${x:,.2f}'
 
 
-# Categorical colors in a fixed order: Deep Tactical Green (Website) & High-Contrast Signal Amber/Orange (Brick & Mortar).
+# Categorical colors in a fixed order: Bright Tactical Emerald (Website) & Signal Orange (Brick & Mortar).
 # Each channel keeps its color whatever the filters.
-SERIES_COLORS = ['#14532D', '#EA580C']
-BAR_COLOR = '#14532D'
+SERIES_COLORS = ['#22C55E', '#F97316']
+BAR_COLOR = '#22C55E'
 
 
 def style_chart(fig: go.Figure, title: str, height: int = 360) -> go.Figure:
     fig.update_layout(
-        title=dict(text=title, x=0, font=dict(size=16, color='#111827')), height=height,
+        template='plotly_dark',
+        title=dict(text=title, x=0, font=dict(size=15, color='#F8FAFC')), height=height,
+        font=dict(color='#CBD5E1'),
         margin=dict(l=8, r=8, t=56, b=8), hovermode='closest',
         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-        legend=dict(orientation='h', yanchor='bottom', y=1.0, xanchor='left', x=0),
+        legend=dict(orientation='h', yanchor='bottom', y=1.0, xanchor='left', x=0,
+                    font=dict(color='#E2E8F0')),
         barcornerradius=6, bargap=0.35,
     )
-    fig.update_xaxes(showgrid=False)
-    fig.update_yaxes(gridcolor='rgba(20, 83, 45, 0.08)', zeroline=False)
+    fig.update_xaxes(showgrid=False, tickfont=dict(color='#CBD5E1'))
+    fig.update_yaxes(gridcolor='rgba(34, 197, 94, 0.12)', zeroline=False,
+                     tickfont=dict(color='#CBD5E1'))
     return fig
 
 
@@ -437,15 +446,15 @@ def render_dashboard():
     # Chart 1: Multi-Layer Spline Area Trajectory (Revenue by Year & Channel)
     by_year = analytics.revenue_by_year_channel(view)
     fig = go.Figure()
-    color_map = {'Website': '#14532D', 'Brick & Mortar': '#EA580C'}
-    fill_map = {'Website': 'rgba(22, 163, 74, 0.22)', 'Brick & Mortar': 'rgba(234, 88, 12, 0.16)'}
+    color_map = {'Website': '#22C55E', 'Brick & Mortar': '#F97316'}
+    fill_map = {'Website': 'rgba(34, 197, 94, 0.22)', 'Brick & Mortar': 'rgba(249, 115, 22, 0.18)'}
     for channel, part in by_year.groupby('StoreType'):
         c_hex = color_map.get(channel, channel_color.get(channel, BAR_COLOR))
         fig.add_trace(go.Scatter(
             x=part['Year'], y=part['Revenue'], name=channel, mode='lines+markers+text',
             line=dict(width=3.5, color=c_hex, shape='spline'),
-            marker=dict(size=10, color='#FFFFFF', line=dict(width=3, color=c_hex)),
-            fill='tozeroy', fillcolor=fill_map.get(channel, 'rgba(20, 83, 45, 0.14)'),
+            marker=dict(size=10, color='#0A0D0B', line=dict(width=3, color=c_hex)),
+            fill='tozeroy', fillcolor=fill_map.get(channel, 'rgba(34, 197, 94, 0.14)'),
             text=[f'${v / 1e6:.2f}M' for v in part['Revenue']],
             textposition='top center', textfont=dict(size=11, color=c_hex),
             hovertemplate=f'<b>{channel}</b><br>%{{x}}: $%{{y:,.0f}}<extra></extra>'))
@@ -480,7 +489,7 @@ def render_dashboard():
     with right:
         by_month = analytics.revenue_by_month(view).copy()
         by_month['Cumulative Share'] = by_month['Share'].cumsum()
-        month_colors = ['#EA580C' if s == by_month['Share'].max() else '#14532D'
+        month_colors = ['#F97316' if s == by_month['Share'].max() else '#16A34A'
                         for s in by_month['Share']]
         fig = go.Figure()
         fig.add_trace(go.Bar(
@@ -491,14 +500,15 @@ def render_dashboard():
         fig.add_trace(go.Scatter(
             x=by_month['Month'], y=by_month['Cumulative Share'], name='Cumulative Share',
             yaxis='y2', mode='lines+markers',
-            line=dict(color='#EA580C', width=2.5, dash='dot'),
-            marker=dict(size=7, color='#EA580C'),
+            line=dict(color='#FB923C', width=2.5, dash='dot'),
+            marker=dict(size=7, color='#F97316'),
             hovertemplate='<b>%{x}</b> Cumulative: %{y:.1%}<extra></extra>'))
         fig = style_chart(fig, '03 // MONTHLY SEASONALITY & CUMULATIVE CURVE', height=380)
         fig.update_yaxes(tickprefix='$', tickformat='~s')
         fig.update_layout(yaxis2=dict(
             overlaying='y', side='right', range=[0, 1.08], tickformat='.0%',
-            showgrid=False, title=dict(text='Cumulative %', font=dict(size=11, color='#4B5563'))))
+            showgrid=False, tickfont=dict(color='#FB923C'),
+            title=dict(text='Cumulative %', font=dict(size=11, color='#FB923C'))))
         st.plotly_chart(fig, use_container_width=True)
         table_view(by_month, pct_cols=('Share', 'Cumulative Share'))
 
